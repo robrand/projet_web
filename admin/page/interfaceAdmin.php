@@ -59,6 +59,77 @@ include ('php/verifierCnxAdmin.php');
             ?>
         </table>
     </div>
+    <div class="large-12 column" role="content">
+        <table class="table-clear w-max site-index"  cellspacing="0">
+            <tr>
+                <td colspan="10" class="site-header"><strong>Consultation</strong></td>
+            </tr>
+            <?php
+            $manager = new ConsultationManager($db);
+            $array = $manager->getListeConsultation();
+            foreach ($array as $obj) {
+                echo'<tr>';
+                echo '<td style="width: 10%;">
+                     ' . $obj->dateconsultation . '
+                </td>';
+                echo '<td style="width: 10%;">';
+                $manager_patient = new PatientManager($db);
+                $array_patient = $manager_patient->getPatient($obj->idpatient);
+                foreach ($array_patient as $patient) {
+                    echo $patient->nompatient;
+                }
+                echo '</td>';
+                echo '<td style="width: 10%;">
+                     ';
+                foreach ($array_patient as $patient) {
+                    echo $patient->prenompatient;
+                } echo '
+                </td>';
+                echo '<td style="width: 10%;">';
+                $manager_psychotherapie = new PsychotherapieManager($db);
+                $array_psychotherapie = $manager_psychotherapie->getPsychotherapie($obj->idpsychotherapie);
+                foreach ($array_psychotherapie as $psychotherapie) {
+                    echo $psychotherapie->nompsychotherapie;
+                }
+                echo '</td>';
+                echo '<td style="width: 10%;">';
+                $manager_test = new TestManager($db);
+                $array_test = $manager_test->getTest($obj->idtest);
+                foreach ($array_test as $test) {
+                    echo $test->nomtest;
+                }
+                echo '</td>';
+                echo '<td style="width: 10%;">
+                     ';
+                foreach ($array_test as $test) {
+                    echo $test->typetest;
+                } echo'
+                </td>';
+                if ($obj->statutconsultation == 0) {
+                    echo '<td style="width: 10%;">
+                     Attente
+                </td>';
+                    echo '<td style="width: 10%;">
+                     <a href="index.php?page=accepte_consultation&id=' . $obj->idconsultation . '"><button type="reset" class="button success tiny">Accepter</button></a>
+                </td>';
+                } elseif ($obj->statutconsultation == 1) {
+                    echo '<td style="width: 10%;">
+                     Acceptée
+                </td>';
+                    echo '<td style="width: 10%;">
+                     <a href="index.php?page=annuler_consultation&id=' . $obj->idconsultation . '"><button type="reset" class="button alert tiny">Annuler</button></a>
+                </td>';
+                } else {
+                    echo '<td style="width: 10%;">
+                     Annulée
+                </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
+                }
+            }
+            ?>
+        </table>
+    </div>
     <div class="large-6 column" role="content">
         <table class="table-clear w-max site-index"  cellspacing="0">
             <tr>

@@ -10,14 +10,48 @@ class ConsultationManager extends Consultation {
     }
 
     public function addConsultation($consultation) {
+        $idpatient = (int)$_SESSION['ident'];
         try {
             $query = 'select insert_consultation(:date_consultation,:id_patient,:id_test,:id_psychotherapie,:id_pathologie)';
             $sql = $this->_db->prepare($query);
             $sql->bindValue(':date_consultation', $consultation['date_consultation']);
-            $sql->bindValue(':id_patient', $consultation['id_patient']);
+            $sql->bindValue(':id_patient', $idpatient);
             $sql->bindValue(':id_test', $consultation['id_test']);
             $sql->bindValue(':id_psychotherapie', $consultation['id_psychotherapie']);
             $sql->bindValue(':id_pathologie', $consultation['id_pathologie']);
+            $sql->execute();
+        } catch (PDOException $e) {
+            print $e->getMessage();
+        }
+    }
+    
+    public function deleteConsultation($idConsultation) {
+        try {
+            $query = 'select delete_consultation(:id_consultation)';
+            $sql = $this->_db->prepare($query);
+            $sql->bindValue(':id_consultation', $idConsultation);
+            $sql->execute();
+        } catch (PDOException $e) {
+            print $e->getMessage();
+        }
+    }
+    
+    public function accepteConsultation($idConsultation) {
+        try {
+            $query = 'select accepte_consultation(:id_consultation)';
+            $sql = $this->_db->prepare($query);
+            $sql->bindValue(':id_consultation', $idConsultation);
+            $sql->execute();
+        } catch (PDOException $e) {
+            print $e->getMessage();
+        }
+    }
+    
+    public function annulerConsultation($idConsultation) {
+        try {
+            $query = 'select annuler_consultation(:id_consultation)';
+            $sql = $this->_db->prepare($query);
+            $sql->bindValue(':id_consultation', $idConsultation);
             $sql->execute();
         } catch (PDOException $e) {
             print $e->getMessage();
