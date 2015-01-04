@@ -1,5 +1,5 @@
 <?php
-include ('php/verifierCnxAdmin.php');
+include ('php/verifierCnxClient.php');
 print "<META http-equiv=\"refresh\": Content=\"2;URL=../Projet_style/index.php?page=interfaceClient\">";
 ?>
 <div class="row">
