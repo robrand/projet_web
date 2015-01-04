@@ -103,7 +103,8 @@ include ('php/verifierCnxAdmin.php');
                      ';
                 foreach ($array_test as $test) {
                     echo $test->typetest;
-                } echo'
+                }
+                echo'
                 </td>';
                 if ($obj->statutconsultation == 0) {
                     echo '<td style="width: 10%;">
@@ -112,16 +113,82 @@ include ('php/verifierCnxAdmin.php');
                     echo '<td style="width: 10%;">
                      <a href="index.php?page=accepte_consultation&id=' . $obj->idconsultation . '"><button type="reset" class="button success tiny">Accepter</button></a>
                 </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
                 } elseif ($obj->statutconsultation == 1) {
                     echo '<td style="width: 10%;">
                      Acceptée
                 </td>';
                     echo '<td style="width: 10%;">
+                     <a href="index.php?page=ajout_facture&id=' . $obj->idconsultation . '&date_consultation=' . $obj->dateconsultation . '&montant_psychotherapie=' . $psychotherapie->montantpsychotherapie . '&montant_test=' . $test->montanttest . '&id_patient=' . $obj->idpatient . '"><button type="reset" class="button tiny">Générer la facture</button></a>
+                </td>';
+                    echo '<td style="width: 10%;">
                      <a href="index.php?page=annuler_consultation&id=' . $obj->idconsultation . '"><button type="reset" class="button alert tiny">Annuler</button></a>
+                </td>';
+                } elseif ($obj->statutconsultation == 3) {
+                    echo '<td style="width: 10%;">
+                     Facturée
+                </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
+                    echo '<td style="width: 10%;">
                 </td>';
                 } else {
                     echo '<td style="width: 10%;">
                      Annulée
+                </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
+                }
+            }
+            ?>
+        </table>
+    </div>
+    <div class="large-12 column" role="content">
+        <table class="table-clear w-max site-index"  cellspacing="0">
+            <tr>
+                <td colspan="10" class="site-header"><strong>Facture</strong></td>
+            </tr>
+            <?php
+            $manager = new FactureManager($db);
+            $array = $manager->getListeFacture();
+            foreach ($array as $obj) {
+                echo'<tr>';
+                echo '<td style="width: 10%;">
+                     ' . $obj->datefacture . '
+                </td>';
+                echo '<td style="width: 10%;">';
+                $manager_patient = new PatientManager($db);
+                $array_patient = $manager_patient->getPatient($obj->idpatient);
+                foreach ($array_patient as $patient) {
+                    echo $patient->nompatient;
+                }
+                echo '</td>';
+                echo '<td style="width: 10%;">
+                     ';
+                foreach ($array_patient as $patient) {
+                    echo $patient->prenompatient;
+                } echo '
+                </td>';
+                echo '<td style="width: 10%;">
+                     ' . $obj->montantfacture . '
+                </td>';
+                if ($obj->statutfacture == 0) {
+                    echo '<td style="width: 10%;">
+                     Attente
+                </td>';
+                    echo '<td style="width: 10%;">
+                     <a href="index.php?page=accepte_facture&id=' . $obj->idfacture . '"><button type="reset" class="button success tiny">Payée</button></a>
+                </td>';
+                    echo '<td style="width: 10%;">
+                </td>';
+                } else {
+                    echo '<td style="width: 10%;">
+                     Payée
+                </td>';
+                    echo '<td style="width: 10%;">
                 </td>';
                     echo '<td style="width: 10%;">
                 </td>';

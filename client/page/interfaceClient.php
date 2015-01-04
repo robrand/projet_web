@@ -82,7 +82,7 @@ include ('php/verifierCnxClient.php');
             ?>  
         </table>
     </div>
-    <div class="large-6 column" role="content">
+    <div class="large-12 column" role="content">
         <?php
         if (isset($_POST["submit_ajout_consultation"])) {
             $manager_consultation = new ConsultationManager($db);
@@ -230,6 +230,14 @@ include ('php/verifierCnxClient.php');
                 <td style="width: 30%;">
                     <a href="index.php?page=supp_consultation&id=' . $obj->idconsultation . '"><button type="reset" class="button tiny alert">Annuler</button></a>
                 </td>';
+                    } elseif ($obj->statutconsultation == 3) {
+                        echo '<td class="text-center" style="width: 5%;">
+                    Facturée
+                </td>
+                <td class="text-center" style="width: 5%;">
+                </td>
+                <td style="width: 30%;">
+                </td>';
                     } else {
                         echo '<td class="text-center" style="width: 5%;">
                     Annulée
@@ -237,6 +245,50 @@ include ('php/verifierCnxClient.php');
                 <td class="text-center" style="width: 5%;">
                 </td>
                 <td style="width: 30%;">
+                </td>';
+                    }
+                    echo '</tr>';
+                }
+            }
+            ?>
+        </table>
+    </div>
+    <div class="large-6 column" role="content">
+        <?php
+        $manager_facture = new FactureManager($db);
+        $array = $manager_facture->getListeFacture();
+        ?>
+        <table class="table-clear w-max site-index"  cellspacing="0">
+            <tr>
+                <td style="width: 60%;" colspan="2" class="site-header"><strong>Mes factures</strong></td>
+                <td style="width: 5%;"  class="site-header text-center">Montant</td>
+                <td style="width: 5%;"  class="site-header text-center"></td>
+                <td style="width: 30%;"  class="site-header">Statut</td>
+            </tr>
+            <?php
+            foreach ($array as $obj) {
+                if ($obj->idpatient == $_SESSION['ident']) {
+                    echo '<tr>
+                <td style="width: 5%;">
+                    <span class="topic-important"></span>
+                </td>
+                <td style="width: 55%;">
+                    ' . $obj->datefacture . '
+                </td>
+                    <td style="width: 5%;">
+                    ' . $obj->montantfacture . '
+                </td>';
+                    if ($obj->statutfacture == 0) {
+                        echo '<td class="text-center" style="width: 5%;">           
+                </td>
+                <td style="width: 30%;">
+                Attente
+                </td>';
+                    } else {
+                        echo '<td class="text-center" style="width: 5%;">           
+                </td>
+                <td style="width: 30%;">
+                Payée
                 </td>';
                     }
                     echo '</tr>';

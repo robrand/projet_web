@@ -57,6 +57,17 @@ class ConsultationManager extends Consultation {
             print $e->getMessage();
         }
     }
+    
+    public function factureConsultation($idConsultation) {
+        try {
+            $query = 'select facture_consultation(:id_consultation)';
+            $sql = $this->_db->prepare($query);
+            $sql->bindValue(':id_consultation', $idConsultation);
+            $sql->execute();
+        } catch (PDOException $e) {
+            print $e->getMessage();
+        }
+    }
 
     public function getListeConsultation() {
         try {
