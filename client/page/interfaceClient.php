@@ -262,8 +262,8 @@ include ('php/verifierCnxClient.php');
             <tr>
                 <td style="width: 60%;" colspan="2" class="site-header"><strong>Mes factures</strong></td>
                 <td style="width: 5%;"  class="site-header text-center">Montant</td>
-                <td style="width: 5%;"  class="site-header text-center"></td>
-                <td style="width: 30%;"  class="site-header">Statut</td>
+                <td style="width: 5%;"  class="site-header text-center">Statut</td>
+                <td style="width: 30%; text-align: center;"  class="site-header">PDF</td>
             </tr>
             <?php
             foreach ($array as $obj) {
@@ -279,16 +279,18 @@ include ('php/verifierCnxClient.php');
                     ' . $obj->montantfacture . '
                 </td>';
                     if ($obj->statutfacture == 0) {
-                        echo '<td class="text-center" style="width: 5%;">           
+                        echo '<td class="text-center" style="width: 5%;">     
+                            Attente
                 </td>
-                <td style="width: 30%;">
-                Attente
+                <td style="width: 30%; text-align: center;">
+                <a href="index.php?page=pdf_facture&id=' . $obj->idfacture . '" target="blank"><span class="fi-page-doc "></a>
                 </td>';
                     } else {
-                        echo '<td class="text-center" style="width: 5%;">           
+                        echo '<td class="text-center" style="width: 5%;">  
+                            Payée
                 </td>
-                <td style="width: 30%;">
-                Payée
+                <td style="width: 30%; text-align: center;">
+                <a href="index.php?page=pdf_facture&id=' . $obj->idfacture . '" target="blank"><span class="fi-page-doc "></a>
                 </td>';
                     }
                     echo '</tr>';
