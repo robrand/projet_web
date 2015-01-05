@@ -18,10 +18,16 @@ class Login {
         } catch (PDOException $e) {
             print $e->getMessage();
         }
+        $i = 0;
         while ($data = $resultset->fetch()) {
             $_loginArray[] = new Patient($data);
+            $i++;
         }
-        return $_loginArray;
+        if ($i > 0) {
+            return $_loginArray;
+        } else {
+            return NULL;
+        }
     }
 
 }

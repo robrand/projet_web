@@ -3,7 +3,7 @@ if (isset($_POST['submit_connexion'])) {
     if (!empty($_POST['email_patient']) && !empty($_POST['mdp_patient'])) {
         $log = new Login($db);
         $auth = $log->isAdmin($_POST['email_patient'], $_POST['mdp_patient']);
-        if ($auth) {
+        if ($auth != null) {
             foreach ($auth as $obj) {
                 if ($obj->idpatient) {
                     if ($obj->statutpatient == 1) {
