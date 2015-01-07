@@ -1,13 +1,23 @@
 <div class="row">
     <?php
     if (isset($_POST["submit_ajout_patient"])) {
-        $manager_patient = new PatientManager($db);
-        $manager_patient->addPatient($_POST);
-        echo "<div data-alert class=\"alert-box success radius\">
+        $query = "select count(*) from patient where (nompatient = '" . $_POST['nom_patient'] . "' AND prenompatient = '" . $_POST['prenom_patient'] . "') OR emailpatient = '" . $_POST['email_patient'] . "'";
+        $resultset = $db->query($query);
+        $data = $resultset->fetch();
+        if ($data[0] == 0) {
+            $manager_patient = new PatientManager($db);
+            $manager_patient->addPatient($_POST);
+            echo "<div data-alert class=\"alert-box success radius\">
                             Votre demande à été enregistrée.
                             <a href=\"#\" class=\"close\">&times;</a>
                         </div>";
-        print "<META http-equiv=\"refresh\": Content=\"2;URL=../Projet_style/index.php?page=accueil\">";
+            print "<META http-equiv=\"refresh\": Content=\"2;URL=../Projet_style/index.php?page=accueil\">";
+        } else {
+            echo "<div data-alert class=\"alert-box alert radius\">
+                            Ce patient existe déjà.
+                            <a href=\"#\" class=\"close\">&times;</a>
+                        </div>";
+        }
     }
     ?>
     <div class="large-12 column">

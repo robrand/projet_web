@@ -10,7 +10,7 @@ class ConsultationManager extends Consultation {
     }
 
     public function addConsultation($consultation) {
-        $idpatient = (int)$_SESSION['ident'];
+        $idpatient = (int) $_SESSION['ident'];
         try {
             $query = 'select insert_consultation(:date_consultation,:id_patient,:id_test,:id_psychotherapie,:id_pathologie)';
             $sql = $this->_db->prepare($query);
@@ -21,10 +21,17 @@ class ConsultationManager extends Consultation {
             $sql->bindValue(':id_pathologie', $consultation['id_pathologie']);
             $sql->execute();
         } catch (PDOException $e) {
-            print $e->getMessage();
+            if ($e->getCode() == 23505) {
+                echo "<div data-alert class=\"alert-box alert radius\">
+                            Cette date n'est pas disponible.
+                            <a href=\"#\" class=\"close\">&times;</a>
+                        </div>";
+            } else {
+                print $e->getMessage();
+            }
         }
     }
-    
+
     public function deleteConsultation($idConsultation) {
         try {
             $query = 'select delete_consultation(:id_consultation)';
@@ -35,7 +42,7 @@ class ConsultationManager extends Consultation {
             print $e->getMessage();
         }
     }
-    
+
     public function accepteConsultation($idConsultation) {
         try {
             $query = 'select accepte_consultation(:id_consultation)';
@@ -46,7 +53,7 @@ class ConsultationManager extends Consultation {
             print $e->getMessage();
         }
     }
-    
+
     public function annulerConsultation($idConsultation) {
         try {
             $query = 'select annuler_consultation(:id_consultation)';
@@ -57,7 +64,7 @@ class ConsultationManager extends Consultation {
             print $e->getMessage();
         }
     }
-    
+
     public function factureConsultation($idConsultation) {
         try {
             $query = 'select facture_consultation(:id_consultation)';
@@ -83,7 +90,7 @@ class ConsultationManager extends Consultation {
         }
         return $_consultationArray;
     }
-    
+
     public function getConsultation($id_consultation) {
         try {
             $query = "select * from consultation where idconsultation = :id_consultation";
@@ -99,4 +106,5 @@ class ConsultationManager extends Consultation {
         }
         return $_consultationArray;
     }
+
 }
